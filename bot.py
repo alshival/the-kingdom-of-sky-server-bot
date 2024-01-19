@@ -1,5 +1,6 @@
 import asyncio
 import os
+import pytz
 import discord 
 from discord.ext import commands,tasks
 from discord import app_commands
@@ -27,8 +28,8 @@ clear_daily_quest_channel_running = False
 async def clear_daily_quest_channel(bot):
     global clear_daily_quest_channel_running
     clear_daily_quest_channel_running = True
-    now = datetime.datetime.now()
-    if now.hour == 0 and now.minute == 0:
+    now = datetime.datetime.now(pytz.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
+    if now.hour == 23 and now.minute == 55:
         try:
             channel_id = 1197511112053239848
             channel = bot.get_channel(channel_id)

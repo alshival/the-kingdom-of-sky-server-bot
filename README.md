@@ -62,15 +62,7 @@ In Sky: Children of the Light, daily quests are an integral part of the gameplay
 
 2. **Easy Access:** Players can easily refer to the channel to stay updated on the latest shard eruption times, upcoming shards, and other relevant information without cluttering the main chat.
 
-## Daily Quest Channel Cleanup
-
 Our bot offers an automated solution to maintain the cleanliness of the daily quest TextChannel. Before the daily reset, the bot will automatically clear out the specified TextChannel, removing any outdated messages and preparing it for the new day's quests.
-
-### How It Works:
-
-1. **Scheduled Reset:** The cleanup occurs at a scheduled time, 5 minutes before the daily reset, ensuring that the TextChannel is refreshed for the upcoming day.
-
-2. **Effortless Maintenance:** By automating the cleanup process, the bot simplifies the task of keeping the daily quest TextChannel organized, allowing players to focus on the game and enjoy a clutter-free channel.
 
 <html>
 <body>

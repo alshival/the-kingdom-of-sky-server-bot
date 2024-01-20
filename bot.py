@@ -26,12 +26,12 @@ bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
 async def hug(interaction: discord.Interaction, member: discord.Member):
     await interaction.response.defer(thinking = True)
     embed1 = discord.Embed(
-        color = discord.Color.purple()
+        color = discord.Color.magenta()
     )
     embed1.set_author(
         name=f"{interaction.user.name} hugged {member.name}",
         icon_url=interaction.user.avatar)
-    await interaction.followup.send(embed = embed1,file=discord.File('public/emojis/icon_hug.webp', filename="map_image.webp"))
+    await interaction.followup.send(member.mention,embed = embed1,file=discord.File('public/emojis/icon_hug.webp', filename="map_image.webp"))
 
 from src import shardPredictor
 
@@ -120,58 +120,114 @@ async def set_daily_quest_channel(interaction: discord.Interaction, channel: dis
             (interaction.guild_id, channel.id),
         )
     await interaction.followup.send(f"Daily quest channel set to {channel.name}.")
-
+    
 clear_daily_quest_channel_running = False
 @tasks.loop(minutes=1)
 async def clear_daily_quest_channel(bot):
-    your_guild_id = bot.guilds[0].id
     global clear_daily_quest_channel_running
-    
-    # Check if the table exists and a channel has been set
-    async with aioduckdb.connect(db_name) as connection:
-        async with connection.cursor() as cursor:
-            await cursor.execute(
-                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'daily_quest_channel') as table_exists"
-            )
-            table_exists_result = await cursor.fetchone()
-            table_exists = table_exists_result[0]
-            if table_exists:
-                await cursor.execute(
-                    "SELECT channel_id FROM daily_quest_channel"
-                )
-                channel_result = await cursor.fetchone()
-    
-            elif not (table_exists and channel_result):
-                print("Daily quest channel not set up or table does not exist. Skipping.")
-                return
     
     clear_daily_quest_channel_running = True
     
     now = datetime.now(pendulum.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
     if now.hour == 23 and now.minute == 55 :
         try:
-            # Retrieve channel ID from the database based on the guild ID
-            async with aioduckdb.connect(db_name) as connection:
-                async with connection.cursor() as cursor:
-                    await cursor.execute(
-                        "SELECT guild_id,channel_id FROM daily_quest_channel WHERE guild_id = ?",
-                        (your_guild_id,),
-                    )
-                    result = await cursor.fetchone()
+            # Iterate over all guilds
+            for guild in bot.guilds:
+                your_guild_id = guild.id
+                
+                # Check if the table exists and a channel has been set
+                async with aioduckdb.connect(db_name) as connection:
+                    async with connection.cursor() as cursor:
+                        await cursor.execute(
+                            "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'daily_quest_channel') as table_exists"
+                        )
+                        table_exists_result = await cursor.fetchone()
+                        table_exists = table_exists_result[0]
+                        if table_exists:
+                            await cursor.execute(
+                                "SELECT channel_id FROM daily_quest_channel WHERE guild_id = ?",
+                                (your_guild_id,),
+                            )
+                            channel_result = await cursor.fetchone()
 
-                    if result:
-                        channel_id = result[1]
-                        channel = bot.get_channel(channel_id)
+                        elif not (table_exists and channel_result):
+                            print(f"Daily quest channel not set up for guild {your_guild_id} or table does not exist. Skipping.")
+                            continue
 
-                        if channel:
-                            await channel.purge(limit=1000)
-                            print("Daily quest channel cleared.")
-                    else:
-                        print("Daily quest channel not set up.")
+                # Retrieve channel ID from the database based on the guild ID
+                async with aioduckdb.connect(db_name) as connection:
+                    async with connection.cursor() as cursor:
+                        await cursor.execute(
+                            "SELECT distinct guild_id, channel_id FROM daily_quest_channel WHERE guild_id = ?",
+                            (your_guild_id,),
+                        )
+                        results = await cursor.fetchall()
+
+                        for result in results:
+                            channel_id = result[1]
+                            channel = bot.get_channel(channel_id)
+
+                            if channel:
+                                await channel.purge(limit=1000)
+                                print(f"Daily quest channel for guild {your_guild_id} cleared.")
+                            else:
+                                print(f"Daily quest channel for guild {your_guild_id} not found.")
         except Exception as e:
             print(f"An error occurred: {e}")
         finally:
             clear_daily_quest_channel_running = False
+
+# clear_daily_quest_channel_running = False
+# @tasks.loop(minutes=1)
+# async def clear_daily_quest_channel(bot):
+#     your_guild_id = bot.guilds[0].id
+#     global clear_daily_quest_channel_running
+    
+#     # Check if the table exists and a channel has been set
+#     async with aioduckdb.connect(db_name) as connection:
+#         async with connection.cursor() as cursor:
+#             await cursor.execute(
+#                 "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'daily_quest_channel') as table_exists"
+#             )
+#             table_exists_result = await cursor.fetchone()
+#             table_exists = table_exists_result[0]
+#             if table_exists:
+#                 await cursor.execute(
+#                     "SELECT channel_id FROM daily_quest_channel"
+#                 )
+#                 channel_result = await cursor.fetchone()
+    
+#             elif not (table_exists and channel_result):
+#                 print("Daily quest channel not set up or table does not exist. Skipping.")
+#                 return
+    
+#     clear_daily_quest_channel_running = True
+    
+#     now = datetime.now(pendulum.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
+#     if now.hour == 23 and now.minute == 55 :
+#         try:
+#             # Retrieve channel ID from the database based on the guild ID
+#             async with aioduckdb.connect(db_name) as connection:
+#                 async with connection.cursor() as cursor:
+#                     await cursor.execute(
+#                         "SELECT distinct guild_id,channel_id FROM daily_quest_channel WHERE guild_id = ?",
+#                         (your_guild_id,),
+#                     )
+#                     result = await cursor.fetchone()
+
+#                     if result:
+#                         channel_id = result[1]
+#                         channel = bot.get_channel(channel_id)
+
+#                         if channel:
+#                             await channel.purge(limit=1000)
+#                             print("Daily quest channel cleared.")
+#                     else:
+#                         print("Daily quest channel not set up.")
+#         except Exception as e:
+#             print(f"An error occurred: {e}")
+#         finally:
+#             clear_daily_quest_channel_running = False
 
 
 @bot.event

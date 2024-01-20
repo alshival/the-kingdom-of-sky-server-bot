@@ -133,6 +133,30 @@ To use the bot, you'll need to create a Discord Bot and set it up in the Discord
    python bot.py
    ```
 
+# Emojis
+If the emojis are not displaying on your server, Upload the Emojis in `public/emojis` to your server:
+
+1. Open your Discord server where you want to use these emojis.
+Access Server Settings:
+
+2. Click on the server name at the top of the channel list to open the server menu.
+Select "Server Settings" from the dropdown menu.
+
+3. Emoji Tab:
+In the Server Settings menu, click on the "Emoji" tab on the left sidebar.
+
+4. Upload Emoji:
+Click the "Upload Emoji" button.
+Select the emoji file from the public/emoji directory on your computer.
+Customize the emoji name if needed.
+Click "Save" to upload the emoji to your server.
+
+5. Find Emoji ID:
+Open the guild that has the emoji
+In the Message box, type `\:emoji_name:` in the message box (notice the backslash).
+Send the message.
+The message you sent will now say `"<:emoji_name:xxxxxxxx>`.
+
 ## Usage
 
 - Use the `/shard_of_the_day` command to get information about the shard of the day.

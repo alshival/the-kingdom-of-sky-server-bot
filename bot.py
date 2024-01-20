@@ -3,10 +3,12 @@ import os
 import pendulum
 import discord 
 import random
+import aioduckdb
 from discord.ext import commands,tasks
 from discord import app_commands
 from datetime import datetime,timedelta
 
+db_name = "data.db"
 discord_bot_token = os.environ.get("fefe_light_token")
 
 # Set up bot with '!' command prefix.
@@ -89,27 +91,101 @@ async def next_shards(interaction: discord.Interaction,n: int = 5,  only: app_co
     await interaction.followup.send(response)
 
 # Administrative stuff
+@bot.tree.command(
+    name="set_daily_quest_channel",
+    description="Set up the channel to be cleared daily."
+)
+async def set_daily_quest_channel(interaction: discord.Interaction, channel: discord.TextChannel):
+    await interaction.response.defer(thinking=True)
+    async with aioduckdb.connect(db_name) as connection:
+        await connection.execute("drop table if exists daily_quest_channel")
+        await connection.execute(
+            """
+            CREATE TABLE IF NOT EXISTS daily_quest_channel (
+                guild_id BIGINT,
+                channel_id BIGINT
+            )
+            """
+        )
+        await connection.execute(
+            "INSERT INTO daily_quest_channel (guild_id, channel_id) VALUES (?, ?)",
+            (interaction.guild_id, channel.id),
+        )
+    await interaction.followup.send(f"Daily quest channel set to {channel.name}.")
+
 clear_daily_quest_channel_running = False
 @tasks.loop(minutes=1)
 async def clear_daily_quest_channel(bot):
+    your_guild_id = bot.guilds[0].id
     global clear_daily_quest_channel_running
-    clear_daily_quest_channel_running = True
-    now = datetime.now(pendulum.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
-    if now.hour == 23 and now.minute == 55:
-        try:
-            channel_id = 1197511112053239848
-            channel = bot.get_channel(channel_id)
     
-            if channel:
-                await channel.purge(limit=1000)
+    # Check if the table exists and a channel has been set
+    async with aioduckdb.connect(db_name) as connection:
+        async with connection.cursor() as cursor:
+            await cursor.execute(
+                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'daily_quest_channel') as table_exists"
+            )
+            table_exists_result = await cursor.fetchone()
+            table_exists = table_exists_result[0]
+            if table_exists:
+                await cursor.execute(
+                    "SELECT channel_id FROM daily_quest_channel"
+                )
+                channel_result = await cursor.fetchone()
+    
+            elif not (table_exists and channel_result):
+                print("Daily quest channel not set up or table does not exist. Skipping.")
+                return
+    
+    clear_daily_quest_channel_running = True
+    
+    now = datetime.now(pendulum.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
+    if now.hour == 23 and now.minute == 55 :
+        try:
+            # Retrieve channel ID from the database based on the guild ID
+            async with aioduckdb.connect(db_name) as connection:
+                async with connection.cursor() as cursor:
+                    await cursor.execute(
+                        "SELECT guild_id,channel_id FROM daily_quest_channel WHERE guild_id = ?",
+                        (your_guild_id,),
+                    )
+                    result = await cursor.fetchone()
+
+                    if result:
+                        channel_id = result[1]
+                        channel = bot.get_channel(channel_id)
+
+                        if channel:
+                            await channel.purge(limit=1000)
+                            print("Daily quest channel cleared.")
+                    else:
+                        print("Daily quest channel not set up.")
         except Exception as e:
-            print(f"an error occured: {e}")
+            print(f"An error occurred: {e}")
         finally:
             clear_daily_quest_channel_running = False
+
+
+# async def clear_daily_quest_channel(bot):
+#     global clear_daily_quest_channel_running
+#     clear_daily_quest_channel_running = True
+#     now = datetime.now(pendulum.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
+#     if now.hour == 23 and now.minute == 55:
+#         try:
+#             channel_id = 1197511112053239848
+#             channel = bot.get_channel(channel_id)
+    
+#             if channel:
+#                 await channel.purge(limit=1000)
+#         except Exception as e:
+#             print(f"an error occured: {e}")
+#         finally:
+#             clear_daily_quest_channel_running = False
 
 @bot.event
 async def on_ready():
     print(f'We have logged in as {bot.user}')
+
     if not clear_daily_quest_channel_running:
         clear_daily_quest_channel.start(bot)
     try:

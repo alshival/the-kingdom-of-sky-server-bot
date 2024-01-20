@@ -1,4 +1,4 @@
-# SkyBot - Discord Bot for Sky: Children of the Light
+# Discord Bot for Sky: Children of the Light
 
 SkyBot is a Discord bot designed to provide information about the game Sky: Children of the Light. It includes features such as shard eruption times and the ability to automatically clean out a specified text channel before the daily reset, allowing for the organization of webhook messages from the Sky: Infographics Database server's `#daily-quest` channel on your server daily.
 

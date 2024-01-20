@@ -101,10 +101,10 @@ To use SkyBot, you'll need to create a Discord Bot and set it up in the Discord 
 
 ## Usage
 
-- Use the `!shard_of_the_day` command to get information about the shard of the day.
-- Use the `!next_shards` command to retrieve details about the next upcoming shards.
-- Use the `!set_daily_quest_channel` command to set up the channel to be cleared daily.
-- Use the `!hug` command to send a hug to another member.
+- Use the `/shard_of_the_day` command to get information about the shard of the day.
+- Use the `/next_shards` command to retrieve details about the next upcoming shards.
+- Use the `/set_daily_quest_channel` command to set up the channel to be cleared daily.
+- Use the `/hug` command to send a hug to another member.
 
 ## Contributing
 

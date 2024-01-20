@@ -205,7 +205,8 @@ async def set_live_shard_channel(interaction: discord.Interaction, channel: disc
         # Post the initial message and store the message_id in the database
 
         response, map_image_path = await get_shard_info_response()
-        message = await interaction.followup.send("**Live Updates:** \n" + response,file=discord.File(map_image_path, filename="map_image.webp"))
+        await interaction.followup.send(f"Live Shard Updates set for `#{channel.name}`")
+        message = await channel.send("**Live Updates:** \n" + response,file=discord.File(map_image_path, filename="map_image.webp"))
         async with aioduckdb.connect(db_name) as connection:
             await connection.execute(
                 "INSERT INTO live_shard_channel (guild_id, channel_id,message_id) VALUES (?, ?,?)",

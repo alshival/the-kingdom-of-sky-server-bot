@@ -29,6 +29,38 @@ Note: The infographics, as well as the shard prediction algorithm, was provided 
 
 - **Daily Quest Channel Cleanup:** Automatically clear out a specified text channel before the daily reset to organize prior day webhook messages.
 
+## Why Set Up a Daily Quest Text Channel?
+
+In Sky: Children of the Light, daily quests are an integral part of the gameplay, providing players with unique challenges and rewards. To enhance the organization and visibility of these daily quests, our Discord bot allows you to set up a dedicated TextChannel exclusively for daily quest-related messages.
+
+### Benefits:
+
+1. **Organization:** Having a designated TextChannel ensures that all daily quest-related messages, webhooks, or followed messages from the [Sky: Infographics Database server's `#daily-quest`](https://discord.com/channels/736912435654688868/801778605486374943) channel are neatly organized in one place.
+
+2. **Easy Access:** Players can easily refer to the channel to stay updated on the latest shard eruption times, upcoming shards, and other relevant information without cluttering the main chat.
+
+## Daily Quest Channel Cleanup
+
+Our bot offers an automated solution to maintain the cleanliness of the daily quest TextChannel. Before the daily reset, the bot will automatically clear out the specified TextChannel, removing any outdated messages and preparing it for the new day's quests.
+
+### How It Works:
+
+1. **Scheduled Reset:** The cleanup occurs at a scheduled time before the daily reset, ensuring that the TextChannel is refreshed for the upcoming quests.
+
+2. **Effortless Maintenance:** By automating the cleanup process, the bot simplifies the task of keeping the daily quest TextChannel organized, allowing players to focus on the game and enjoy a clutter-free channel.
+
+<html>
+<body>
+    <table style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="width: 100%; text-align: center;">
+                <img src="https://github.com/alshival/the-kingdom-of-sky-server-bot/blob/main/public/demo3.png" style="display: block; margin: 0 auto;">
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
 # Installation
 
 **Clone the repository**:

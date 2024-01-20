@@ -40,7 +40,7 @@ async def help(interaction: discord.Interaction):
       - `n`: Number of shards to predict.
       - `only`: Predict only Red or Black shards.
 
-## Channel Functions 📡
+## Admin Functions 📡
 
 - **/set_live_shard_channel** 📡
   - Set up a channel for live shard updates.

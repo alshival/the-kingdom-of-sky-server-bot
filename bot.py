@@ -36,6 +36,203 @@ async def hug(interaction: discord.Interaction, member: discord.Member):
         icon_url=interaction.user.avatar)
     await interaction.followup.send(member.mention,embed = embed1,file=discord.File('public/emojis/icon_hug.webp', filename="map_image.webp"))
 
+#####################################
+# Isle of Dawn
+#####################################
+from src import realms
+
+@bot.tree.command(
+    name="isle_of_dawn",
+    description="Retrieve map and spirit info"
+)
+@app_commands.choices(
+    map = [
+        app_commands.Choice(name="Map Art",value="map_art"),
+        app_commands.Choice(name="Map Pics",value="map_pic"),
+    ],
+    spirit = [
+        app_commands.Choice(name="Trees",value="trees"),
+        app_commands.Choice(name="Pointing Candlemaker",value="pointing_candlemaker"),
+        app_commands.Choice(name="Rejecting Voyager",value="rejecting_voyager"),
+        app_commands.Choice(name="Ushering Stargazer",value="ushering_stargazer")
+    ]
+)
+async def isle_of_dawn(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
+    await interaction.response.defer(thinking=True)
+    realm = "isle"
+    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    if len(files_to_send)>0:
+        await interaction.followup.send(files=files_to_send)
+    else:
+        await interaction.followup.send("Sorry, an error occured.")
+
+#####################################
+# Daylight Prairie
+#####################################
+from src import realms
+
+@bot.tree.command(
+    name="daylight_prairie",
+    description="Retrieve map and spirit info"
+)
+@app_commands.choices(
+    map = [
+        app_commands.Choice(name="Map Art",value="map_art"),
+        app_commands.Choice(name="Map Pics",value="map_pic"),
+    ],
+    spirit = [
+        app_commands.Choice(name="Trees",value="trees"),
+        app_commands.Choice(name="Applauding Bellmaker",value="applauding_bellmaker"),
+        app_commands.Choice(name="Bird Whisperer",value="bird_whisperer"),
+        app_commands.Choice(name="Butterfly Charmer",value="butterfly_charmer"),
+        app_commands.Choice(name="Ceremonial Worshipper",value="ceremonial_worshipper"),
+        app_commands.Choice(name="Exhausted Dock Worker",value="exhausted_dock_worker"),
+        app_commands.Choice(name="Laughing Light Catcher",value="laughing_light_catcher"),
+        app_commands.Choice(name="Slumbering Shipwright",value="slumbering_shipwright"),
+        app_commands.Choice(name="Waving Bellmaker",value="waving_bellmaker"),
+    ]
+)
+async def daylight_prairie(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
+    await interaction.response.defer(thinking=True)
+    realm = "prairie"
+    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    if len(files_to_send)>0:
+        await interaction.followup.send(files=files_to_send)
+    else:
+        await interaction.followup.send("Sorry, an error occured.")
+
+#####################################
+# Hidden Forest
+#####################################
+from src import realms
+
+@bot.tree.command(
+    name="hidden_forest",
+    description="Retrieve map and spirit info"
+)
+@app_commands.choices(
+    map = [
+        app_commands.Choice(name="Map Art",value="map_art"),
+        app_commands.Choice(name="Map Pics",value="map_pic"),
+    ],
+    spirit = [
+        app_commands.Choice(name="Trees",value="trees"),
+        app_commands.Choice(name="Apologetic Lumberjack",value="apologetic_lumberjack"),
+        app_commands.Choice(name="Blushing Prospector",value="blushing_prospector"),
+        app_commands.Choice(name="Dismayed Hunter",value="dismayed_hunter"),
+        app_commands.Choice(name="Hide'n'Seek Pioneer",value="hide_n_seek_pioneer"),
+        app_commands.Choice(name="Shivering Trailblazer",value="shivering_trailblazer"),
+        app_commands.Choice(name="Tearful Light Miner",value="tearful_light_miner"),
+        app_commands.Choice(name="Whale Whisperer",value="whale_whisperer")
+    ]
+)
+async def hidden_forest(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
+    await interaction.response.defer(thinking=True)
+    realm = "forest"
+    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    if len(files_to_send)>0:
+        await interaction.followup.send(files=files_to_send)
+    else:
+        await interaction.followup.send("Sorry, an error occured.")
+
+#####################################
+# Valley of Triumph
+#####################################
+from src import realms
+
+@bot.tree.command(
+    name="valley_of_triumph",
+    description="Retrieve map and spirit info"
+)
+@app_commands.choices(
+    map = [
+        app_commands.Choice(name="Map Art",value="map_art"),
+        app_commands.Choice(name="Map Pics",value="map_pic"),
+    ],
+    spirit = [
+        app_commands.Choice(name="Trees",value="trees"),
+        app_commands.Choice(name="Backflipping Champion",value="backflipping_champion"),
+        app_commands.Choice(name="Bowing Medalist",value="bowing_medalist"),
+        app_commands.Choice(name="Cheerful Spectator",value="cheerful_spectator"),
+        app_commands.Choice(name="Confident Sightseer",value="confident_sightseer"),
+        app_commands.Choice(name="Handstanding Thrillseeker",value="handstanding_thrillseeker"),
+        app_commands.Choice(name="Manta Whisperer",value="manta_whisperer"),
+        app_commands.Choice(name="Proud Victor",value="proud_victor")
+    ]
+)
+async def valley_of_triumph(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
+    await interaction.response.defer(thinking=True)
+    realm = "valley"
+    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    if len(files_to_send)>0:
+        await interaction.followup.send(files=files_to_send)
+    else:
+        await interaction.followup.send("Sorry, an error occured.")
+
+#####################################
+# Golden Wasteland
+#####################################
+from src import realms
+
+@bot.tree.command(
+    name="golden_wasteland",
+    description="Retrieve map and spirit info"
+)
+@app_commands.choices(
+    map = [
+        app_commands.Choice(name="Map Art",value="map_art"),
+        app_commands.Choice(name="Map Pics",value="map_pic"),
+    ],
+    spirit = [
+        app_commands.Choice(name="Trees",value="trees"),
+        app_commands.Choice(name="Courageous Solider",value="courageous_soldier"),
+        app_commands.Choice(name="Fainting Warrior",value="fainting_warrior"),
+        app_commands.Choice(name="Frightened Refugee",value="frightened_refugee"),
+        app_commands.Choice(name="Lookout Scout",value="lookout_scout"),
+        app_commands.Choice(name="Saluting Captain",value="saluting_captain"),
+        app_commands.Choice(name="Stealthy Survivor",value="stealthy_survivor")
+    ]
+)
+async def golden_wasteland(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
+    await interaction.response.defer(thinking=True)
+    realm = "wasteland"
+    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    if len(files_to_send)>0:
+        await interaction.followup.send(files=files_to_send)
+    else:
+        await interaction.followup.send("Sorry, an error occured.")
+
+#####################################
+# Vault of Knowledge
+#####################################
+from src import realms
+
+@bot.tree.command(
+    name="vault_of_knowledge",
+    description="Retrieve map and spirit info"
+)
+@app_commands.choices(
+    map = [
+        app_commands.Choice(name="Map Art",value="map_art"),
+        app_commands.Choice(name="Map Pics",value="map_pic"),
+    ],
+    spirit = [
+        app_commands.Choice(name="Trees",value="trees"),
+        app_commands.Choice(name="Levitating Adept",value="levitating_adept"),
+        app_commands.Choice(name="Meditating Monastic",value="meditating_monastic"),
+        app_commands.Choice(name="Memory Whisperer",value="memory_whisperer"),
+        app_commands.Choice(name="Polite Scholar",value="polite_scholar"),
+        app_commands.Choice(name="Praying Acolyte",value="praying_acolyte")
+    ]
+)
+async def vault_of_knowledge(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
+    await interaction.response.defer(thinking=True)
+    realm = "vault"
+    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    if len(files_to_send)>0:
+        await interaction.followup.send(files=files_to_send)
+    else:
+        await interaction.followup.send("Sorry, an error occured.")
 
 #####################################
 # Shards
@@ -153,7 +350,7 @@ async def post_live_shard_updates():
                             pass
 
                         if existing_message:
-                            await existing_message.edit(content=response, attachments=[discord.File(map_image_path, filename="map_image.webp")])
+                            await existing_message.edit(content="**Live Updates:** \n" + response, attachments=[discord.File(map_image_path, filename="map_image.webp")])
                         else:
                             new_message = await channel.send(response, file=discord.File(map_image_path, filename="map_image.webp"))
                             # Update the message_id in the database
@@ -171,9 +368,9 @@ async def post_live_shard_updates():
                             pass
 
                         if existing_message:
-                            await existing_message.edit(content=response, attachments=[discord.File('public/noShard.gif', filename="map_image.webp")])
+                            await existing_message.edit(content="**Live Updates:** \n" + response, attachments=[discord.File('public/noShard.gif', filename="map_image.webp")])
                         else:
-                            new_message = await channel.send(response, file=discord.File('public/noShard.gif', filename="map_image.webp"))
+                            new_message = await channel.send("**Live Updates:** \n" + response, file=discord.File('public/noShard.gif', filename="map_image.webp"))
                             # Update the message_id in the database
                             await cursor.execute(
                                 "UPDATE live_shard_channel SET message_id = ? WHERE guild_id = ? AND channel_id = ?",
@@ -311,7 +508,7 @@ async def clear_daily_quest_channel(bot):
                             channel = bot.get_channel(channel_id)
 
                             if channel:
-                                await channel.purge(limit=1000)
+                                await channel.purge(limit=2000)
                                 print(f"Daily quest channel for guild {your_guild_id} cleared.")
                             else:
                                 print(f"Daily quest channel for guild {your_guild_id} not found.")

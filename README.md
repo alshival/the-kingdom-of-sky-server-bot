@@ -34,7 +34,6 @@ Note: The infographics, as well as the shard prediction algorithm, was provided 
 - **Virtual Hugs:** Use the /hug command to send virtual hugs to other members, spreading positivity in your Discord server.
 
 # Usage
-Certainly! Here's the revised summary with a separate section for shard functions and channel functions:
 
 ## Shard Functions
 Utilize the following commands to gather information about shards:

@@ -4,6 +4,21 @@ SkyBot is a Discord bot designed to provide information about the game Sky: Chil
 
 Note: The infographics, as well as the shard prediction algorithm, was provided and translated from javascript code written by [Plutoy](https://github.com/PlutoyDev/sky-shards).
 
+<html>
+<body>
+    <table style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="width: 50%;">
+                <img src="https://github.com/alshival/the-kingdom-of-sky-server-bot/blob/main/public/demo1.png">
+            </td>
+            <td style="width: 50%;">
+                <img src="https://github.com/alshival/the-kingdom-of-sky-server-bot/blob/main/public/demo2.png">
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
 ## Features
 
 - **Shard Eruption Information:** Get information about the shard of the day, including details about red and black shards, their realms, maps, and reward Ascended Candles.

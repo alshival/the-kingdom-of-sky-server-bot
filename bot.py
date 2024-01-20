@@ -1,6 +1,6 @@
 import asyncio
 import os
-import pytz
+import pendulum
 import discord 
 import random
 from discord.ext import commands,tasks
@@ -40,32 +40,48 @@ async def shard_of_the_day(interaction: discord.Interaction):
     occurrences = ",".join([f"<t:{int(x.timestamp())}:t>" for x in shard_info['occurrences']])
     # You can customize the response based on the shard info
     if shard_info['haveShard']:
-        response = f"**{'Red' if shard_info['isRed']==1 else 'Black'} Shard Today:**\n"\
-                   f"Realm: {shard_info['realm']}\n"\
-                   f"Map: {shard_info['map']}\n"\
-                   f"Reward AC: {shard_info['rewardAC']}\n"\
-                   f"Occurences: {occurrences}"
+        if shard_info['isRed']:
+            response = "<:ShardRed:1198069899973636137> **Red Shard Today:**\n"\
+                       f"Realm: {shard_info['realm']}\n"\
+                       f"Map: {shard_info['map']}\n"\
+                       f"Reward AC: {shard_info['rewardAC']} <:AscendedCandle:1198069985017331852>\n"\
+                       f"Occurences: {occurrences}"
+        else:
+            response = "<:ShardBlack:1198069944697503894>  **Black Shard Today:**\n"\
+                       f"Realm: {shard_info['realm']}\n"\
+                       f"Map: {shard_info['map']}\n"\
+                       f"Occurences: {occurrences}"
+        await interaction.followup.send(response,file=discord.File(map_image_path, filename="map_image.webp"))
+
     else:
         response = f"**No Shard today!**"
 
-    await interaction.followup.send(response,file=discord.File(map_image_path, filename="map_image.webp"))
+        await interaction.followup.send(response,file=discord.File('public/noShard.gif', filename="map_image.webp"))
 
 @bot.tree.command(name='next_shards')
-async def next_shards(interaction: discord.Interaction):
+@app_commands.choices(
+    only =[
+        app_commands.Choice(name="Red Shards",value="red"),
+        app_commands.Choice(name="Black Shards",value="black")]
+)
+async def next_shards(interaction: discord.Interaction,n: int = 5,  only: app_commands.Choice[str] = None):
     await interaction.response.defer(thinking=True)
 
     # Get today's date as string
     today_date_str = datetime.utcnow()
 
     # Get shard info for the next 5 shards
-    next_shards_info = shardPredictor.find_next_n_shards(n=5)
+    if only:
+        next_shards_info = shardPredictor.find_next_n_shards(n,{'only':only.value})
+    else:
+        next_shards_info = shardPredictor.find_next_n_shards(n)
 
     # Format occurrences for each shard
     formatted_shards = []
     for shard_info in next_shards_info:
         occurrences = ",".join([f"<t:{int(x.timestamp())}:t>" for x in shard_info['occurrences']])
         formatted_shards.append(
-            f"{'Red' if shard_info['isRed'] == 1 else 'Black'} shard on {shard_info['date'].strftime('%Y-%m-%d')} in {shard_info['map']} \n \t {occurrences}")
+            f"{'<:ShardRed:1198069899973636137> Red' if shard_info['isRed'] == 1 else '<:ShardBlack:1198069944697503894> Black'} shard on {shard_info['date'].strftime('%Y-%m-%d')} in {shard_info['map']} \n \t {'<:AscendedCandle:1198069985017331852>' if shard_info['isRed']==1 else ''} {occurrences}")
 
     # Combine the formatted shards into a single response
     response = "\n\n".join(formatted_shards)
@@ -78,7 +94,7 @@ clear_daily_quest_channel_running = False
 async def clear_daily_quest_channel(bot):
     global clear_daily_quest_channel_running
     clear_daily_quest_channel_running = True
-    now = datetime.now(pytz.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
+    now = datetime.now(pendulum.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
     if now.hour == 23 and now.minute == 55:
         try:
             channel_id = 1197511112053239848

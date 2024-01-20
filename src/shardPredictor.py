@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import pendulum
 
 early_sky_offset = timedelta(minutes=-32, seconds=-10)
 eruption_offset = timedelta(minutes=7)
@@ -71,7 +72,8 @@ override_reward_AC = {
 }
 
 def get_shard_info(date):
-    today = date.replace(hour=0, minute=0, second=0, microsecond=0)
+    pacific_timezone = pendulum.timezone('America/Los_Angeles')
+    today = pendulum.instance(date).in_tz(pacific_timezone).start_of('day')
     day_of_month = today.day
     day_of_week = today.weekday()
     is_red = day_of_month % 2 == 1
@@ -141,7 +143,8 @@ def find_next_shard(from_date, opts=None):
         return find_next_shard(from_date + timedelta(days=1), opts)
 
 def find_next_n_shards(n=5, opts=None):
-    from_date = datetime.today()
+    pacific_timezone = pendulum.timezone('America/Los_Angeles')
+    from_date = pendulum.instance(datetime.now()).in_tz(pacific_timezone).start_of('day')
     opts = opts or {}
     result = []
     

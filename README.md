@@ -33,9 +33,9 @@ Note: The infographics, as well as the shard prediction algorithm, was provided 
 
 - **Virtual Hugs:** Use the /hug command to send virtual hugs to other members, spreading positivity in your Discord server.
 
-# Usage
+The `/help` command provides information on how to use the bot.
 
-## Shard Functions
+### Shard Functions
 Utilize the following commands to gather information about shards:
 
 - **/shard_of_the_day**
@@ -47,7 +47,7 @@ Utilize the following commands to gather information about shards:
         - n: Number of shards to predict.
         - only: Predict only Red or Black shards.
 
-## Channel Functions
+### Channel Functions
 Manage channels for shard updates and daily quest-related messages:
 
 - **/set_live_shard_channel**
@@ -64,7 +64,7 @@ Manage channels for shard updates and daily quest-related messages:
     - Required Parameter: Channel (discord.TextChannel)
     - Permissions: Administrator
 
-## Virtual Hugs
+### Virtual Hugs
 Spread positivity with the following command:
 
 - **/hug**
@@ -74,7 +74,7 @@ Spread positivity with the following command:
 
 These commands provide distinct functionalities for managing shard information and channel settings, enhancing user experience in your Discord server.
 
-## Realm Functions
+### Realm Functions
 Users can utilize the following commands to retrieve map and spirit information for each realm:
 
 #### Isle of Dawn

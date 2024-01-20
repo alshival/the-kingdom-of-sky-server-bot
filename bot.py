@@ -22,6 +22,61 @@ sky_bot_token = os.environ.get("sky_bot_token")
 bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
 
 @bot.tree.command(
+    name="help",
+    description="Learn how to use the bot to retrieve info about Sky"
+)
+async def help(interaction: discord.Interaction):
+    help_text = """
+# How to use the Sky Discord Bot 🌟
+
+## Shard Functions 💎
+
+- **/shard_of_the_day** 🌈
+  - Get info about the shard of the day.
+
+- **/next_shards** 🔮
+  - Retrieve details about upcoming shards.
+    - Options:
+      - `n`: Number of shards to predict.
+      - `only`: Predict only Red or Black shards.
+
+## Channel Functions 📡
+
+- **/set_live_shard_channel** 📡
+  - Set up a channel for live shard updates.
+    - Required Parameter: Channel (discord.TextChannel).
+    - Permissions: Administrator.
+
+- **/remove_live_shard_channel** ❌
+  - Remove live shard updates from the server.
+    - Permissions: Administrator.
+
+- **/set_daily_quest_channel** 🗓️
+  - Set up a channel to be cleared daily.
+    - Required Parameter: Channel (discord.TextChannel).
+    - Permissions: Administrator.
+
+## Virtual Hugs 🤗
+
+- **/hug** 🤗
+  - Send a virtual hug to another member.
+    - Required Parameter: Member (discord.Member).
+    - Permissions: Use Application Commands.
+
+## Realm Functions 🏞️
+
+Explore different realms with these commands:
+
+- `/isle_of_dawn`
+- `/daylight_prairie`
+- `/hidden_forest`
+- `/valley_of_triumph`
+- `/golden_wasteland`
+- `/vault_of_knowledge`
+"""
+    await interaction.response.send_message(help_text)
+
+@bot.tree.command(
     name="hug",
     description="Virtual hugs"
 )

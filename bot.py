@@ -31,7 +31,7 @@ async def hug(interaction: discord.Interaction, member: discord.Member):
     embed1.set_author(
         name=f"{interaction.user.name} hugged {member.name}",
         icon_url=interaction.user.avatar)
-    await interaction.followup.send(embed = embed1)
+    await interaction.followup.send(embed = embed1,file=discord.File('public/emojis/icon_hug.webp', filename="map_image.webp"))
 
 from src import shardPredictor
 
@@ -103,6 +103,7 @@ async def next_shards(interaction: discord.Interaction,n: int = 5,  only: app_co
     name="set_daily_quest_channel",
     description="Set up the channel to be cleared daily."
 )
+@app_commands.checks.has_permissions(administrator=True)
 async def set_daily_quest_channel(interaction: discord.Interaction, channel: discord.TextChannel):
     await interaction.response.defer(thinking=True)
     async with aioduckdb.connect(db_name) as connection:

@@ -52,6 +52,41 @@ Note: The infographics, as well as the shard prediction algorithm, was provided 
 - **/hug**
   - Send a virtual hug to another member.
 
+## Realm Functions
+Users can utilize the following commands to retrieve map and spirit information for each realm:
+
+#### Isle of Dawn
+- Command: `/isle_of_dawn`
+- Options: Map Art, Map Pics
+- Spirits: Trees, Pointing Candlemaker, Rejecting Voyager, Ushering Stargazer
+
+#### Daylight Prairie
+- Command: `/daylight_prairie`
+- Options: Map Art, Map Pics
+- Spirits: Trees, Applauding Bellmaker, Bird Whisperer, Butterfly Charmer, Ceremonial Worshipper, Exhausted Dock Worker, Laughing Light Catcher, Slumbering Shipwright, Waving Bellmaker
+
+#### Hidden Forest
+- Command: `/hidden_forest`
+- Options: Map Art, Map Pics
+- Spirits: Trees, Apologetic Lumberjack, Blushing Prospector, Dismayed Hunter, Hide'n'Seek Pioneer, Shivering Trailblazer, Tearful Light Miner, Whale Whisperer
+
+#### Valley of Triumph
+- Command: `/valley_of_triumph`
+- Options: Map Art, Map Pics
+- Spirits: Trees, Backflipping Champion, Bowing Medalist, Cheerful Spectator, Confident Sightseer, Handstanding Thrillseeker, Manta Whisperer, Proud Victor
+
+#### Golden Wasteland
+- Command: `/golden_wasteland`
+- Options: Map Art, Map Pics
+- Spirits: Trees, Courageous Soldier, Fainting Warrior, Frightened Refugee, Lookout Scout, Saluting Captain, Stealthy Survivor
+
+#### Vault of Knowledge
+- Command: `/vault_of_knowledge`
+- Options: Map Art, Map Pics
+- Spirits: Trees, Levitating Adept, Meditating Monastic, Memory Whisperer, Polite Scholar, Praying Acolyte
+
+These commands offer a comprehensive way for users to explore and gather information about different realms, including map art, map pics, and details about specific spirits within each realm.
+
 ## Why Set Up a Daily Quest Text Channel?
 
 In Sky: Children of the Light, daily quests are an integral part of the gameplay, providing players with unique challenges and rewards. To enhance the organization and visibility of these daily quests, our Discord bot allows you to set up a dedicated TextChannel exclusively for daily quest-related messages.

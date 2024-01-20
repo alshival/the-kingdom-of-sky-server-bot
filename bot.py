@@ -1,3 +1,10 @@
+config = {
+    # Replace right-side with your emoji IDs
+    'ShardRed_emoji':'<:ShardRed:1198069899973636137>',
+    'ShardBlack_emoji':'<:ShardBlack:1198069944697503894>',
+    'AscendedCandle_emoji':'<:AscendedCandle:1198069985017331852>'
+}
+
 import asyncio
 import os
 import pendulum
@@ -9,7 +16,7 @@ from discord import app_commands
 from datetime import datetime,timedelta
 
 db_name = "data.db"
-discord_bot_token = os.environ.get("sky_bot_token")
+sky_bot_token = os.environ.get("sky_bot_token")
 
 # Set up bot with '!' command prefix.
 bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())
@@ -83,7 +90,8 @@ async def next_shards(interaction: discord.Interaction,n: int = 5,  only: app_co
     for shard_info in next_shards_info:
         occurrences = ",".join([f"<t:{int(x.timestamp())}:t>" for x in shard_info['occurrences']])
         formatted_shards.append(
-            f"{'<:ShardRed:1198069899973636137> Red' if shard_info['isRed'] == 1 else '<:ShardBlack:1198069944697503894> Black'} shard on {shard_info['date'].strftime('%Y-%m-%d')} in {shard_info['map']} \n \t {'<:AscendedCandle:1198069985017331852>' if shard_info['isRed']==1 else ''} {occurrences}")
+            f"""{config['ShardRed_emoji'] + "Red" if shard_info['isRed'] == 1 else config['ShardBlack_emoji'] + "Black"} shard on {shard_info['date'].strftime('%Y-%m-%d')} in {shard_info['map']} \n \t {config['AscendedCandle_emoji'] if shard_info['isRed']==1 else ''} {occurrences}"""
+        )
 
     # Combine the formatted shards into a single response
     response = "\n\n".join(formatted_shards)
@@ -98,7 +106,6 @@ async def next_shards(interaction: discord.Interaction,n: int = 5,  only: app_co
 async def set_daily_quest_channel(interaction: discord.Interaction, channel: discord.TextChannel):
     await interaction.response.defer(thinking=True)
     async with aioduckdb.connect(db_name) as connection:
-        await connection.execute("drop table if exists daily_quest_channel")
         await connection.execute(
             """
             CREATE TABLE IF NOT EXISTS daily_quest_channel (
@@ -166,22 +173,6 @@ async def clear_daily_quest_channel(bot):
             clear_daily_quest_channel_running = False
 
 
-# async def clear_daily_quest_channel(bot):
-#     global clear_daily_quest_channel_running
-#     clear_daily_quest_channel_running = True
-#     now = datetime.now(pendulum.timezone('America/Los_Angeles'))  # Set to Pacific Time Zone
-#     if now.hour == 23 and now.minute == 55:
-#         try:
-#             channel_id = 1197511112053239848
-#             channel = bot.get_channel(channel_id)
-    
-#             if channel:
-#                 await channel.purge(limit=1000)
-#         except Exception as e:
-#             print(f"an error occured: {e}")
-#         finally:
-#             clear_daily_quest_channel_running = False
-
 @bot.event
 async def on_ready():
     print(f'We have logged in as {bot.user}')
@@ -194,4 +185,4 @@ async def on_ready():
     except Exception as e:
         print(e)
 
-bot.run(discord_bot_token)
+bot.run(sky_bot_token)

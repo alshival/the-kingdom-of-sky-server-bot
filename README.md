@@ -134,7 +134,7 @@ To use the bot, you'll need to create a Discord Bot and set it up in the Discord
    ```
 
 # Emojis
-If the emojis are not displaying on your server, Upload the Emojis in `public/emojis` to your server:
+If the emojis are not displaying on your server, upload the Emojis in `public/emojis` to your server:
 
 1. Open your Discord server where you want to use these emojis.
 Access Server Settings:
@@ -156,6 +156,17 @@ Open the guild that has the emoji
 In the Message box, type `\:emoji_name:` in the message box (notice the backslash).
 Send the message.
 The message you sent will now say `"<:emoji_name:xxxxxxxx>`.
+
+6. Replace IDs in bot.py:
+Replace the placeholders in your config dictionary in bot.py with the actual emoji IDs you copied:
+```
+config = {
+    # Replace right-side with your emoji IDs
+    'ShardRed_emoji':'<:ShardRed:1198069899973636137>',
+    'ShardBlack_emoji':'<:ShardBlack:1198069944697503894>',
+    'AscendedCandle_emoji':'<:AscendedCandle:1198069985017331852>'
+}
+```
 
 ## Usage
 

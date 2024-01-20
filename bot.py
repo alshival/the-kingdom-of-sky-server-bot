@@ -9,7 +9,7 @@ from discord import app_commands
 from datetime import datetime,timedelta
 
 db_name = "data.db"
-discord_bot_token = os.environ.get("fefe_light_token")
+discord_bot_token = os.environ.get("sky_bot_token")
 
 # Set up bot with '!' command prefix.
 bot = commands.Bot(command_prefix="!",intents=discord.Intents.all())

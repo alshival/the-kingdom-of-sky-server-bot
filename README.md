@@ -45,7 +45,7 @@ Our bot offers an automated solution to maintain the cleanliness of the daily qu
 
 ### How It Works:
 
-1. **Scheduled Reset:** The cleanup occurs at a scheduled time before the daily reset, ensuring that the TextChannel is refreshed for the upcoming quests.
+1. **Scheduled Reset:** The cleanup occurs at a scheduled time, 5 minutes before the daily reset, ensuring that the TextChannel is refreshed for the upcoming day.
 
 2. **Effortless Maintenance:** By automating the cleanup process, the bot simplifies the task of keeping the daily quest TextChannel organized, allowing players to focus on the game and enjoy a clutter-free channel.
 

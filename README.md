@@ -75,7 +75,7 @@ To use SkyBot, you'll need to create a Discord Bot and set it up in the Discord 
    - Add the following content to `.env`:
 
      ```env
-     fefe_light_token=YOUR_DISCORD_BOT_TOKEN
+     sky_bot_token=YOUR_DISCORD_BOT_TOKEN
      ```
 
 **Run the bot**:

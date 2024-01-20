@@ -23,11 +23,34 @@ Note: The infographics, as well as the shard prediction algorithm, was provided 
 
 ## Features
 
-- **Shard Eruption Information:** Get information about the shard of the day, including details about red and black shards, their realms, maps, and reward Ascended Candles.
+- **Shard Eruption Information:** Obtain details about the shard of the day, including information on red and black shards, their realms, maps, and reward Ascended Candles.
 
-- **Next Shards:** Retrieve information about the next upcoming shards, either red or black, with details on their occurrence dates and maps.
+- **Next Shards:** Retrieve information about the next upcoming shards, whether red or black, with details on their occurrence dates and maps.
 
-- **Daily Quest Channel Cleanup:** Automatically clear out a specified text channel before the daily reset to organize prior day webhook messages.
+- **Live Shard Updates:** Set up and manage a channel for live shard updates, allowing users to receive real-time information about shard eruptions.
+
+- **Daily Quest Channel Cleanup:** Automatically clear a specified text channel before the daily reset, ensuring a clean slate for the next day's activities.
+
+- **Virtual Hugs:** Use the /hug command to send virtual hugs to other members, spreading positivity in your Discord server.
+
+# Usage
+- **/shard_of_the_day**
+  - Get information about the shard of the day.
+
+- **/next_shards**
+  - Retrieve details about the next upcoming shards.
+
+- **/set_live_shard_channel**
+  - Set up the channel for live shard updates.
+
+- **/remove_live_shard_channel**
+  - Remove all live shard updates from the server.
+
+- **/set_daily_quest_channel**
+  - Set up a channel to be cleared daily before resets.
+
+- **/hug**
+  - Send a virtual hug to another member.
 
 ## Why Set Up a Daily Quest Text Channel?
 
@@ -167,13 +190,6 @@ config = {
     'AscendedCandle_emoji':'<:AscendedCandle:1198069985017331852>'
 }
 ```
-
-## Usage
-
-- Use the `/shard_of_the_day` command to get information about the shard of the day.
-- Use the `/next_shards` command to retrieve details about the next upcoming shards.
-- Use the `/set_daily_quest_channel` command to set up the channel to be cleared daily.
-- Use the `/hug` command to send a hug to another member.
 
 ## Contributing
 

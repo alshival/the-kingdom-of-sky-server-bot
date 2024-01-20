@@ -2,6 +2,8 @@
 
 SkyBot is a Discord bot designed to provide information about the game Sky: Children of the Light. It includes features such as shard eruption times and the ability to automatically clean out a specified text channel before the daily reset, allowing for the organization of webhook messages from the Sky: Infographics Database server's `#daily-quest` channel on your server daily.
 
+Note: The prediction algorithm was translated from javascript provided by [Plutoy](https://github.com/PlutoyDev/sky-shards).
+
 ## Features
 
 - **Shard Eruption Information:** Get information about the shard of the day, including details about red and black shards, their realms, maps, and reward Ascended Candles.
@@ -73,7 +75,7 @@ To use SkyBot, you'll need to create a Discord Bot and set it up in the Discord 
    - Add the following content to `.env`:
 
      ```env
-     fefe_light_token=YOUR_DISCORD_BOT_TOKEN
+     sky_bot_token=YOUR_DISCORD_BOT_TOKEN
      ```
 
 **Run the bot**:

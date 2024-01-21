@@ -2,7 +2,7 @@
 
 A Discord bot designed to provide information about the game Sky: Children of the Light. It includes features such as shard eruption times and the ability to automatically clean out a specified text channel before the daily reset, allowing for the organization of webhooks or followed messages from the [Sky: Infographics Database server's `#daily-quest`](https://discord.com/channels/736912435654688868/801778605486374943) channel on your server daily.
 
-Live Demo: [The Kingdom of Sky](https://discord.gg/NVXBPkqUQN)
+Live Demo: [The Kingdom of Sky](https://discord.gg/22s2GTWSPp)
 
 Note: The infographics, as well as the shard prediction algorithm, was provided and translated from javascript code written by [Plutoy](https://github.com/PlutoyDev/sky-shards).
 
@@ -38,8 +38,8 @@ The `/help` command provides information on how to use the bot.
 ### Shard Functions
 Utilize the following commands to gather information about shards:
 
-- **/shard_of_the_day**
-  - Get information about the shard of the day.
+- **/current_shard**
+  - Get information about the current shard. Provides a map of the eruption area.
 
 - **/next_shards**
   - Retrieve details about the next upcoming shards.

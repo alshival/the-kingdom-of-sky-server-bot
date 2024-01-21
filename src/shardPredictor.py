@@ -10,23 +10,36 @@ black_shard_interval = timedelta(hours=8)
 red_shard_interval = timedelta(hours=6)
 
 realms = ['prairie', 'forest', 'valley', 'wasteland', 'vault']
-areas_translation = {
-    'prairie.butterfly': ['Butterfly Field', 'Village Islands'],
-    'forest.brook': ['Forest Brook', 'Boneyard'],
-    'valley.rink': ['Ice Rink'],
-    'wasteland.temple': ['Broken Temple', 'Battlefield'],
-    'vault.starlight': ['Starlight Desert'],
-    'prairie.village': ['Village Islands', 'Boneyard'],
-    'forest.boneyard': ['Boneyard', 'Forest Garden', 'Treehouse'],
-    'valley.rink': ['Ice Rink'],
-    'wasteland.battlefield': ['Battlefield', 'Graveyard', 'Crabfield'],
-    'vault.starlight': ['Starlight Desert'],
-    'prairie.cave': ['Cave', 'Forest Garden', 'Village of Dreams'],
-    'forest.end': ['Forest Garden', 'Treehouse', 'Elevated Clearing'],
-    'valley.dreams': ['Village of Dreams', 'Hermit valley'],
-    'wasteland.graveyard': ['Graveyard', 'Crabfield', 'Forgotten Ark'],
-    'vault.jelly': ['Jellyfish Cove']
-}
+SkyRealms ={
+    "isle": "Isle of Dawn",
+    "prairie": "Daylight Prairie",
+    "forest": "Hidden Forest",
+    "valley": "Valley of Triumph",
+    "wasteland": "Golden Wasteland",
+    "vault": "Vault of Knowledge",
+  }
+SkyMaps = {
+    "prairie.butterfly": "Butterfly Fields",
+    "prairie.village": "Village Islands",
+    "prairie.cave": "Cave",
+    "prairie.bird": "Bird Nest",
+    "prairie.island": "Sanctuary Island",
+    "forest.brook": "Brook",
+    "forest.boneyard": "Boneyard",
+    "forest.end": "Forest Garden",
+    "forest.tree": "Treehouse",
+    "forest.sunny": "Elevated Clearing",
+    "valley.rink": "Ice Rink",
+    "valley.dreams": "Village of Dreams",
+    "valley.hermit": "Hermit valley",
+    "wasteland.temple": "Broken Temple",
+    "wasteland.battlefield": "Battlefield",
+    "wasteland.graveyard": "Graveyard",
+    "wasteland.crab": "Crab Field",
+    "wasteland.ark": "Forgotten Ark",
+    "vault.starlight": "Starlight Desert",
+    "vault.jelly": "Jellyfish Cove"
+  }
 
 shards_info = [
     {
@@ -85,7 +98,10 @@ def get_shard_info(date):
     map_key = shard_info['maps'][realm_idx]
     reward_AC = override_reward_AC.get(map_key, shard_info.get('defRewardAC'))
     occurrences = [
-        (today + shard_info['offset'] + shard_info['interval'] * i) for i in range(3)
+        ((today + shard_info['offset'] + shard_info['interval'] * i)) for i in range(3)
+    ]
+    eruptions = [
+        ((today + shard_info['offset'] + shard_info['interval'] * i))+timedelta(minutes=8) for i in range(3)
     ]
     return {
         'date': date,
@@ -94,10 +110,13 @@ def get_shard_info(date):
         'offset': shard_info['offset'],
         'interval': shard_info['interval'],
         'lastEnd': occurrences[-1] + end_offset,
-        'realm': realms[realm_idx],
+        'realm':realms[realm_idx],
+        'RealmName':SkyRealms[realms[realm_idx]],
         'map': map_key,
+        'MapName': SkyMaps[map_key],
         'rewardAC': reward_AC,
-        'occurrences': occurrences
+        'occurrences': occurrences,
+        'eruptions':eruptions
     }
 
 def get_upcoming_shard_phase(now, info=None):
@@ -116,6 +135,18 @@ def get_upcoming_shard_phase(now, info=None):
         return {'index': 1, 'start': start, 'land': start + land_offset, 'end': second_end}
     start = first_end - end_offset
     return {'index': 0, 'start': start, 'land': start + land_offset, 'end': first_end}
+
+def current_shard_status(date):
+    pacific_timezone = pendulum.timezone('America/Los_Angeles')
+    now = pendulum.instance(date).in_tz(pacific_timezone)
+    shard_phase = get_upcoming_shard_phase(now)
+    response = {}
+    response['phase'] = f"Phase {shard_phase['index'] + 1}"
+    if now < shard_phase['land']:
+        response['status'] = f"starts <t:{int(shard_phase['land'].timestamp())}:R>."
+    elif (now >= shard_phase['land']) and (now <= shard_phase['end']):
+        response['status'] = f"ongoing. Ends <t:{int(shard_phase['end'].timestamp())}:R>."
+    return response
 
 def get_all_shard_full_phases(now, info=None):
     today = now.replace(hour=0, minute=0, second=0, microsecond=0)

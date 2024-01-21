@@ -14,6 +14,8 @@ import aioduckdb
 from discord.ext import commands,tasks
 from discord import app_commands
 from datetime import datetime,timedelta
+from typing import Literal, Union, NamedTuple
+import time
 
 db_name = "data.db"
 sky_bot_token = os.environ.get("sky_bot_token")
@@ -31,8 +33,8 @@ async def help(interaction: discord.Interaction):
 
 ## Shard Functions 💎
 
-- **/shard_of_the_day** 🌈
-  - Get info about the shard of the day.
+- **/current_shard** 🌈
+  - Get info about the current shard
 
 - **/next_shards** 🔮
   - Retrieve details about upcoming shards.
@@ -115,16 +117,16 @@ from src import realms
 async def isle_of_dawn(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
     await interaction.response.defer(thinking=True)
     realm = "isle"
-    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    files_to_send,response = realms.get_files_to_send(realm,map,spirit)
     if len(files_to_send)>0:
-        await interaction.followup.send(files=files_to_send)
+        await interaction.followup.send(response,files=files_to_send)
     else:
-        await interaction.followup.send("Sorry, an error occured.")
+        await interaction.followup.send("Sorry, something went wrong. Did you choose a map or spirit option?")
 
 #####################################
 # Daylight Prairie
 #####################################
-from src import realms
+
 
 @bot.tree.command(
     name="daylight_prairie",
@@ -150,11 +152,11 @@ from src import realms
 async def daylight_prairie(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
     await interaction.response.defer(thinking=True)
     realm = "prairie"
-    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    files_to_send,response = realms.get_files_to_send(realm,map,spirit)
     if len(files_to_send)>0:
-        await interaction.followup.send(files=files_to_send)
+        await interaction.followup.send(response,files=files_to_send)
     else:
-        await interaction.followup.send("Sorry, an error occured.")
+        await interaction.followup.send("Sorry, something went wrong. Did you choose a map or spirit option?")
 
 #####################################
 # Hidden Forest
@@ -184,11 +186,11 @@ from src import realms
 async def hidden_forest(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
     await interaction.response.defer(thinking=True)
     realm = "forest"
-    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    files_to_send,response = realms.get_files_to_send(realm,map,spirit)
     if len(files_to_send)>0:
-        await interaction.followup.send(files=files_to_send)
+        await interaction.followup.send(response,files=files_to_send)
     else:
-        await interaction.followup.send("Sorry, an error occured.")
+        await interaction.followup.send("Sorry, something went wrong. Did you choose a map or spirit option?")
 
 #####################################
 # Valley of Triumph
@@ -218,11 +220,11 @@ from src import realms
 async def valley_of_triumph(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
     await interaction.response.defer(thinking=True)
     realm = "valley"
-    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    files_to_send,response = realms.get_files_to_send(realm,map,spirit)
     if len(files_to_send)>0:
-        await interaction.followup.send(files=files_to_send)
+        await interaction.followup.send(response,files=files_to_send)
     else:
-        await interaction.followup.send("Sorry, an error occured.")
+        await interaction.followup.send("Sorry, something went wrong. Did you choose a map or spirit option?")
 
 #####################################
 # Golden Wasteland
@@ -251,11 +253,11 @@ from src import realms
 async def golden_wasteland(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
     await interaction.response.defer(thinking=True)
     realm = "wasteland"
-    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    files_to_send,response = realms.get_files_to_send(realm,map,spirit)
     if len(files_to_send)>0:
-        await interaction.followup.send(files=files_to_send)
+        await interaction.followup.send(response,files=files_to_send)
     else:
-        await interaction.followup.send("Sorry, an error occured.")
+        await interaction.followup.send("Sorry, something went wrong. Did you choose a map or spirit option?")
 
 #####################################
 # Vault of Knowledge
@@ -283,11 +285,11 @@ from src import realms
 async def vault_of_knowledge(interaction: discord.Interaction, map: app_commands.Choice[str] = None, spirit: app_commands.Choice[str] = None):
     await interaction.response.defer(thinking=True)
     realm = "vault"
-    files_to_send = realms.get_files_to_send(realm,map,spirit)
+    files_to_send,response = realms.get_files_to_send(realm,map,spirit)
     if len(files_to_send)>0:
-        await interaction.followup.send(files=files_to_send)
+        await interaction.followup.send(response,files=files_to_send)
     else:
-        await interaction.followup.send("Sorry, an error occured.")
+        await interaction.followup.send("Sorry, something went wrong. Did you choose a map or spirit option?")
 
 #####################################
 # Shards
@@ -298,38 +300,37 @@ async def get_shard_info_response(date=datetime.utcnow()):
     today_date_str = date
     # Get shard info for today
     shard_info = shardPredictor.get_shard_info(today_date_str)
-    
+    phase_status = shardPredictor.current_shard_status(today_date_str)
     # Image path
     map_image_path = f"public/infographics/map_clement/{shard_info['map']}.webp"
-    occurrences = ",".join([f"<t:{int(x.timestamp())}:t>" for x in shard_info['occurrences']])
+    eruptions = ",".join([f"<t:{int(x.timestamp())}:t>" for x in shard_info['eruptions']])
     
     # Customize the response based on the shard info
     if shard_info['haveShard']:
         if shard_info['isRed']:
-            response = f"{config['ShardRed_emoji']} **Red Shard Today:**\n"\
-                       f"Realm: {shard_info['realm']}\n"\
-                       f"Map: {shard_info['map']}\n"\
+            response = f"## {config['ShardRed_emoji']} **Red Shard Today:**\n"\
+                       f"**Status: {phase_status['phase']} {phase_status['status']}**\n"\
+                       f"Realm: {shard_info['RealmName']}\n"\
+                       f"Map: {shard_info['MapName']}\n"\
                        f"Reward AC: {shard_info['rewardAC']} {config['AscendedCandle_emoji']}\n"\
-                       f"Occurrences: {occurrences}"
+                       f"Eruptions: {eruptions} \n"
         else:
             response = f"{config['ShardBlack_emoji']} **Black Shard Today:**\n"\
-                       f"Realm: {shard_info['realm']}\n"\
-                       f"Map: {shard_info['map']}\n"\
-                       f"Occurrences: {occurrences}"
+                       f"Realm: {shard_info['RealmName']}\n"\
+                       f"Map: {shard_info['MapName']}\n"\
+                       f"Eruptions: {eruptions}"
         return response, map_image_path
     else:
-        return f"**No Shard today!**", 'public/noShard.gif'
+        return f"**No shard!**", 'public/noShard.gif'
 
 @bot.tree.command(
-    name='shard_of_the_day',
+    name='current_shard',
     description="Get information about Today's shard"
 )
-async def shard_of_the_day(interaction: discord.Interaction):
+async def current_shard(interaction: discord.Interaction):
     await interaction.response.defer(thinking=True)
-
     # Get shard info and response
     response, map_image_path = await get_shard_info_response()
-    
     # Post the shard of the day message
     await interaction.followup.send(response, file=discord.File(map_image_path, filename="map_image.webp"))
 
@@ -357,16 +358,15 @@ async def next_shards(interaction: discord.Interaction,n: int = 5,  only: app_co
     # Format occurrences for each shard
     formatted_shards = []
     for shard_info in next_shards_info:
-        occurrences = ",".join([f"<t:{int(x.timestamp())}:t>" for x in shard_info['occurrences']])
+        eruptions = ",".join([f"<t:{int((x + timedelta(minutes=8)).timestamp())}:t>" for x in shard_info['occurrences']])
         formatted_shards.append(
-            f"""{config['ShardRed_emoji'] + "Red" if shard_info['isRed'] == 1 else config['ShardBlack_emoji'] + "Black"} shard on {shard_info['date'].strftime('%Y-%m-%d')} in {shard_info['map']} \n \t {config['AscendedCandle_emoji'] if shard_info['isRed']==1 else ''} {occurrences}"""
+            f"""**{config['ShardRed_emoji'] + "Red" if shard_info['isRed'] == 1 else config['ShardBlack_emoji'] + "Black"} shard on <t:{int(shard_info['date'].timestamp())}:D> in {shard_info['MapName']},{shard_info['RealmName']}** \n \t {config['AscendedCandle_emoji'] if shard_info['isRed']==1 else ''} {eruptions}"""
         )
 
     # Combine the formatted shards into a single response
-    response = "\n\n".join(formatted_shards)
+    response = f"## Today is <t:{int(datetime.now().timestamp())}:D>\n"+ "\n\n".join(formatted_shards)
 
     await interaction.followup.send(response)
-
 
 @tasks.loop(minutes=3)  # Update every 3 minutes (adjust as needed)
 async def post_live_shard_updates():
@@ -414,7 +414,7 @@ async def post_live_shard_updates():
                                 (new_message.id, guild_id, channel_id),
                             )
                     else:
-                        response = f"No Shard today!"
+                        response = f"No Shard!"
                         # Try to get the existing message
                         existing_message = None
                         try:
@@ -571,6 +571,17 @@ async def clear_daily_quest_channel(bot):
             print(f"An error occurred: {e}")
         finally:
             clear_daily_quest_channel_running = False
+
+@bot.tree.command(
+    name="purge_messages",
+    description="Purge the last n messages from a specific channel. (default n=100)"
+)
+@app_commands.checks.has_permissions(administrator=True)
+async def purge_messages(interaction: discord.Interaction, channel: Union[discord.VoiceChannel, discord.TextChannel], n: int = 100):
+    await interaction.response.send_message("Purging...")
+    time.sleep(5)
+    await channel.purge(limit=n)
+
 
 @bot.event
 async def on_ready():

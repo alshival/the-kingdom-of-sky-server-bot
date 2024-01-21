@@ -109,6 +109,26 @@ Users can utilize the following commands to retrieve map and spirit information 
 
 These commands offer a comprehensive way for users to explore and gather information about different realms, including map art, map pics, and details about specific spirits within each realm.
 
+<html>
+<body>
+    <table style="width: 100%;" cellspacing="0" cellpadding="0">
+        <tr>
+            <td style="width: 50%;">
+                <h3>Map Art option</h3>
+                <img src="https://github.com/alshival/the-kingdom-of-sky-server-bot/blob/main/public/demo4.png">
+            </td>
+        </tr>
+        <tr>
+            <td style="width: 50%;">
+                <h3>Map Pics option (from Sky Infographics Database)</h3>
+                <img src="https://github.com/alshival/the-kingdom-of-sky-server-bot/blob/main/public/demo5.png">
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
+
+
 ## Why Set Up a Daily Quest Text Channel?
 
 In Sky: Children of the Light, daily quests are an integral part of the gameplay, providing players with unique challenges and rewards. To enhance the organization and visibility of these daily quests, our Discord bot allows you to set up a dedicated TextChannel exclusively for daily quest-related messages.

@@ -140,13 +140,16 @@ def current_shard_status(date):
     pacific_timezone = pendulum.timezone('America/Los_Angeles')
     now = pendulum.instance(date).in_tz(pacific_timezone)
     shard_phase = get_upcoming_shard_phase(now)
-    response = {}
-    response['phase'] = f"Phase {shard_phase['index'] + 1}"
-    if now < shard_phase['land']:
-        response['status'] = f"starts <t:{int(shard_phase['land'].timestamp())}:R>."
-    elif (now >= shard_phase['land']) and (now <= shard_phase['end']):
-        response['status'] = f"ongoing. Ends <t:{int(shard_phase['end'].timestamp())}:R>."
-    return response
+    if shard_phase:
+        response = {}
+        response['phase'] = f"Phase {shard_phase['index'] + 1}"
+        if now < shard_phase['land']:
+            response['status'] = f"starts <t:{int(shard_phase['land'].timestamp())}:R>."
+        elif (now >= shard_phase['land']) and (now <= shard_phase['end']):
+            response['status'] = f"ongoing. Ends <t:{int(shard_phase['end'].timestamp())}:R>."
+        return response
+    else:
+        return {'phase':"No more shards today.",'status':''}
 
 def get_all_shard_full_phases(now, info=None):
     today = now.replace(hour=0, minute=0, second=0, microsecond=0)

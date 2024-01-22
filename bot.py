@@ -295,7 +295,7 @@ async def vault_of_knowledge(interaction: discord.Interaction, map: app_commands
 # Shards
 #####################################
 from src import shardPredictor
-async def get_shard_info_response(date=datetime.utcnow()):
+async def get_shard_info_response(date=pendulum.now()):
     # Get today's date as string
     today_date_str = date
     # Get shard info for today
